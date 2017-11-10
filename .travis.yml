@@ -1,25 +1,23 @@
 language: objective-c
-osx_image: xcode9
-cache: 
-  directories:
-    - Carthage
+osx_image: xcode9.1
+rvm:
+- 2.4.2
 install:
-  - bin/bootstrap-if-needed
-  - gem install scan
+- gem install xcpretty
 script:
-  - scan --scheme Resolver-macOS
-  - scan --scheme Resolver-iOS
+- xcodebuild -project Resolver.xcodeproj -scheme "Resolver-iOS" | xcpretty
+- xcodebuild -project Resolver.xcodeproj -scheme "Resolver-macOS" | xcpretty
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+- "./docs/build_docs.sh"
 before_deploy:
-  - carthage build --no-skip-current
-  - carthage archive Resolver
+- carthage build --no-skip-current
+- carthage archive Resolver
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: C5qDpqAPLHc3W5MWaqkSG/LKk9r0cJ9Etn15dnBwwQoByGiMu2HcJB+GJry6143qU8xEddoahuYf7KUzl/NsR9E2nKv4ZDBWSQh6yvJVzf0q2PTikEn8OHqqvcUa9V9p+xnqnIa5A3HB7xcD7ACSnNO2zC2uNP+7+HBVJbZymLdBBpelwJFKidTXHC+4PlW3vxpJ6jbjXXqNbTF9bJnuKW/+Hj7MSGJs6QbxerDlsVtN5aGNu7CHziPe8RKG500vcpNqnwJYCJBn+FESjJIwr+J9zj+ANjZTgJ7oRekDg/Ghgu+T9NU8PTxzPuYJahprQDOJaXWEOv2A9fCN+2p1zW1ZifD3C0pQsqvCtgnbrNcfMXYLhLNih2pMRsYxIgnJD4MiheLJTRhh2ZmE4rMwGvzntsj7q3+UzjN2HRLpv7j1+QlgsXUp720P5C5gyq6k3fG4O2ReFzV6Wa67/MbKCcZdSLHvXuOqKzgDOfPLAbzMEVBFGdO7FkH943tnKP7uGt1aSD93tKpbQA0bLlUGYeCgw/LfVOC4VL0ecx+NCUmtxVh8VbCW+UGtSAssja6FkqbsECCHa7lqiKGjFk3J/GKjxdbQx13wlVHgg0lPe+SAwJqB1JeZtqrWn6+YIA7InXbnG1bAquQ85BdGBUynD1H+jCBCIZ8tGo4lrLu0piE=
+    secure: KCYuFcrjWYRv0Mu6oOcF6VVsiMIWyQrKiCRT3FF+lHv8zLd/iz7NIAallUyWtsrK3tHX0jfVJeCau5IHI6sk9/8+PtSmg62PzCZw+8fHnGKXM135VVQa+dSAKU+/ZIyApZuqkSM8bsisrDzIHYylHgP4nI1t9iOdy4WCaXTEEYdBXpJTb6igqaqI2Sr4bsF+IOy5H+U8Xxn6YjU9Ml19M2zgOLQQjxdnW8JLlLG6RCu8Oo9E32KCwsktupzDioC8rhvNpxPSA29Qrj5E2ITxxk4ZZCgWc8Ggaqsuo3d9TEXqhbJRH9aK/uxPaoRldWF0cTn4tWpSmyyOQ0GVb7okgswCm8KFibEOKk0kwoPekngBAlSPAhRQOc03PgrRM+VzCuesX1/Y2tix1Kul4dAFy6pHWrs+/jZXMLih/SugedZINwnn9y8s/DyDGlrAgFAagIoaurUn0SRQkzm6HvWi0I2Tjie3CCHx1sBm3E3eEzSIF1IlYZH29gKnaKeuF3AoP1toiawsUIjXqK/TRT3Wbup+zlrGgysjUwVpDqF7HpEhXkvh6Dz3RF4Z4KQomdHjvdGTbekoCdJDpuOnrLIgt2z0ChhuVJP54I681TQg2LlWbocCvSP/kJN6QFDp+tlw33ueRdnAqx89Z/Rj3c1ifgCEFxAoaHWQYMBwd0UbGkk=
   file: Resolver.framework.zip
   on:
-    repo: zhuhaow/Resolver
-    tags: true
+    repo: Hmyy/Resolver
+    tag: true
